@@ -583,8 +583,6 @@ public class IecScada implements ServerEventListener {
 		}
 	}
 
-	
-
 	public List<Integer> convertToList(String commaSeparatedString) {
 		return Arrays.stream(commaSeparatedString.split(",")).map(String::trim).map(Integer::parseInt).collect(Collectors.toList());
 	}
