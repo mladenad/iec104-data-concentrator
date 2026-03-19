@@ -1,0 +1,137 @@
+{"properties": [
+  {
+    "name": "iec104.identity",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.identity'"
+  },
+  {
+    "name": "gridone.server.protocol",
+    "type": "java.lang.String",
+    "description": "A description for 'gridone.server.protocol'"
+  },
+  {
+    "name": "spring.boot.admin.client.url",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.admin.client.url'"
+  },
+  {
+    "name": "spring.boot.admin.client.username",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.admin.client.username'"
+  },
+  {
+    "name": "spring.boot.admin.client.password",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.admin.client.password'"
+  },
+  {
+    "name": "spring.boot.admin.client.instance.metadata.user.name",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.admin.client.instance.metadata.user.name'"
+  },
+  {
+    "name": "spring.boot.admin.client.instance.metadata.user.password",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.boot.admin.client.instance.metadata.user.password'"
+  },
+  {
+    "name": "iec104.cacheduration",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.cacheduration'"
+  },
+  {
+    "name": "archive.handler.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'archive.handler.enabled'"
+  },
+  {
+    "name": "archive.server.protocol",
+    "type": "java.lang.String",
+    "description": "A description for 'archive.server.protocol'"
+  },
+  {
+    "name": "iec104.server.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.server.enabled'"
+  },
+  {
+    "name": "iec104.server.address",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.server.address'"
+  },
+  {
+    "name": "iec104.server.port",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.server.port'"
+  },
+  {
+    "name": "iec104.server.maxconnections",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.server.maxconnections'"
+  },
+  {
+    "name": "iec104.server.allowedclients",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.server.allowedclients'"
+  },
+  {
+    "name": "micro.server.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'micro.server.enabled'"
+  },
+  {
+    "name": "micro.server.host",
+    "type": "java.lang.String",
+    "description": "A description for 'micro.server.host'"
+  },
+  {
+    "name": "micro.server.port",
+    "type": "java.lang.String",
+    "description": "A description for 'micro.server.port'"
+  },
+  {
+    "name": "micro.username",
+    "type": "java.lang.String",
+    "description": "A description for 'micro.username'"
+  },
+  {
+    "name": "micro.password",
+    "type": "java.lang.String",
+    "description": "A description for 'micro.password'"
+  },
+  {
+    "name": "micro.server.conectionlosttimeout",
+    "type": "java.lang.String",
+    "description": "A description for 'micro.server.conectionlosttimeout'"
+  },
+  {
+    "name": "modbus.server.control.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'modbus.server.control.enabled'"
+  },
+  {
+    "name": "iec104.vip.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.vip.enabled'"
+  },
+  {
+    "name": "iec104.vip.address",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.vip.address'"
+  },
+  {
+    "name": "iec104.vip.interface",
+    "type": "java.lang.String",
+    "description": "A description for 'iec104.vip.interface'"
+  },
+  {
+    "name": "mqtt.schedules-dir",
+    "type": "java.lang.String",
+    "description": "A description for 'mqtt.schedules-dir'"
+  },
+  {
+    "name": "scheduler.battery-storage.cron",
+    "type": "java.lang.String",
+    "description": "A description for 'scheduler.battery-storage.cron'"
+  }
+]}
