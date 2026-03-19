@@ -15,10 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 @EnableAsync
 @EnableScheduling
 @ComponentScan(basePackages = {"bg.tid.shared.services", "bg.tid.iec104"})
-public class GridOneIec104Application {
+public class Iec104DataConcentratorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GridOneIec104Application.class, args);
+		SpringApplication.run(Iec104DataConcentratorApplication.class, args);
 		log.info("GridOneIec104 start completed !");
 
 	}

@@ -10,7 +10,6 @@ import java.net.UnknownHostException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,8 +64,6 @@ import bg.tid.iec104.db.service.HubService;
 import bg.tid.shared.iec104.Iec104RetranslationSettings;
 import bg.tid.shared.iec104.InformationObjectData;
 import bg.tid.shared.iec104.IolData;
-import bg.tid.iec104.db.service.CommandService;
-import bg.tid.iec104.db.entity.Command;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +76,6 @@ public class IecHub implements ConnectionEventListener {
 	private final IecScada iecScada;
 	private final Environment env;
 	private final HubService hubService;
-	private final CommandService commandService;
 	private final Map<String, Connection> iecServerConnections;
 	private final KeepalivedStatusService keepalivedStatus;
 	
@@ -104,7 +100,6 @@ public class IecHub implements ConnectionEventListener {
 		this.env = iecScada.getEnv();
 		this.keepalivedStatus = iecScada.getKeepalivedStatus();
 		this.hubService = iecScada.getHubService();
-		this.commandService = iecScada.getCommandService();
 		this.iecServerConnections = iecScada.getIecServerConnections();
 		this.iolData = iolData;
 	}
@@ -247,22 +242,6 @@ public class IecHub implements ConnectionEventListener {
 					if (command != null) {
 						log.info("processAsdu: Execute the command with select = false for: {}", ioa);
 						command.run(); // Execute the command with select = false
-					}
-
-					Long commandId = notConfirmedCommands.remove(ioa);
-					if (commandId != null) {
-						log.info("processAsdu: Command confirmed for ioa: {}", ioa);
-						// Delay execution for new record to be added in sendCmd() and then found here
-						scheduler.schedule(() -> {
-							Optional<Command> dbCommand = commandService.getCommandById(commandId);
-							log.info("processAsdu: Executed scheduler for commandId:{}. Result:{}", commandId, dbCommand.isPresent());
-							if (dbCommand.isPresent()) {
-								dbCommand.get().setConfirmed(true);
-								commandService.updateCommand(dbCommand.get());
-							}
-						}, 1, TimeUnit.SECONDS);
-					} else {
-						log.warn("processAsdu: commandId is missing for ioa:{}. notConfirmedCommands size:{}", ioa, notConfirmedCommands.size());
 					}
 
 					return;
@@ -713,15 +692,6 @@ public class IecHub implements ConnectionEventListener {
 			if (!oio.get().getTargetAddress().isEmpty()) {
 				processFormula(oio.get(), receivedTime);
 			}
-
-			Command command = new Command();
-			command.setGridOneUser(user);
-			command.setTimestamp(Timestamp.valueOf(receivedTime));
-			command.setTopic(mqttTopic + "/" + value);
-			command.setReason(reason);
-			command.setConfirmed(false);
-			Command newCommand = commandService.createCommand(command);
-			notConfirmedCommands.put(informationObjectAddress, newCommand.getId());
 
 			return true;
 
