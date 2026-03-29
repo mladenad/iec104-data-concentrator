@@ -320,6 +320,9 @@ public class IecHub implements ConnectionEventListener {
 										            ASdu asdu = new ASdu(asduType, true, aSdu.getCauseOfTransmission(), false, false, 0, iolIo.getCommonAddress(),
 										                    new InformationObject(settings.getAddr(), scaledIeList));
 										            conn.send(asdu);
+										        } else {
+										        	log.debug("No connection found for IP: {}. ASDU not retransmitted. Available connections: {}", 
+										        			settings.getIp(), iecServerConnections.keySet());
 										        }
 										    }
 										}										

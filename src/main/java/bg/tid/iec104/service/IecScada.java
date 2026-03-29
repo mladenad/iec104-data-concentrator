@@ -81,6 +81,7 @@ public class IecScada implements ServerEventListener {
 	private Map<String, IecHub> hubs;
 	private List<IolData> dataList;
 	private int connectionIdCounter = 1;
+	private List<String> allowedClientsList;
 	
 	private final List<ScheduledFuture<?>> scheduledTasks = new CopyOnWriteArrayList<>();
 	
@@ -262,14 +263,23 @@ public class IecScada implements ServerEventListener {
 	// BmsController and PMS tracking methods were removed
 
 	@Override
-	public ConnectionEventListener connectionIndication(Connection connection) {
-		int myConnectionId = connectionIdCounter++;
-		log.info("A client (Originator Address {}) has connected using TCP/IP. Will listen for a StartDT request. Connection ID: ", connection.getOriginatorAddress());
-		log.info("Started data transfer on connection ({}) Will listen for incoming commands.", myConnectionId);
+    public ConnectionEventListener connectionIndication(Connection connection) {
+        int myConnectionId = connectionIdCounter++;
+        String clientIp = connection.getRemoteInetAddress().getHostAddress();
 
-		iecServerConnections.put(connection.getRemoteInetAddress().getHostAddress(), connection);
-		return new ConnectionListener(connection, myConnectionId);
-	}
+        if (allowedClientsList != null && !allowedClientsList.contains(clientIp)) {
+            log.warn("Unauthorized client attempted to connect from IP: {}. Closing connection.", clientIp);
+            connection.close();
+            return null;
+        }
+
+        log.info("A client (Originator Address: {}) has connected. Connection ID: {}",
+            connection.getOriginatorAddress(), myConnectionId);
+        log.info("Started data transfer on connection ({}). Will listen for incoming commands.", myConnectionId);
+
+        iecServerConnections.put(clientIp, connection);
+        return new ConnectionListener(connection, myConnectionId);
+    }
 
 	@Override
 	public void serverStoppedListeningIndication(IOException e) {
@@ -486,14 +496,15 @@ public class IecScada implements ServerEventListener {
 	private Server startIecServer(String addr, int port, String allowedClientsStr, int maxConnections) throws Exception {
 		log.debug("startIecServer:{}:{}", addr, port);
 		
-		List<String> allowedClientsList = allowedClientsStr.isBlank() ? null : List.of(allowedClientsStr.split(","));
+		allowedClientsList = allowedClientsStr.isBlank() ? null : List.of(allowedClientsStr.split(","));
+		
 		Builder builder = Server.builder();
 		InetAddress bindAddress = InetAddress.getByName(addr);
 		Server server = builder
 			.setBindAddr(bindAddress)
 			.setPort(port)
 			.setMaxConnections(maxConnections)
-			.setAllowedClients(allowedClientsList)
+			.setAllowedClients(null)  // <-- disable built-in filtering, we handle it manually
 			.build();
 		try {
 			server.start(this);
